@@ -1,0 +1,20 @@
+body {
+  background: #455A64;
+  color: #ECEFF1;
+  /* https://fonts.google.com/specimen/Poppins */
+  font-family: 'Poppins', sans-serif;
+}
+
+#main-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+h1{
+  font-weight: 300;
+}
