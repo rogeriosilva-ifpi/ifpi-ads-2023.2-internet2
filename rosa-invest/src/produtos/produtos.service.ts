@@ -47,4 +47,12 @@ export class ProdutosService {
 
     produto.alternarStatus();
   }
+
+  public remover(idProduto: string): void {
+    const index = produtos.findIndex((p) => p.id == idProduto);
+
+    if (index === -1) return;
+
+    produtos.splice(index, 1);
+  }
 }

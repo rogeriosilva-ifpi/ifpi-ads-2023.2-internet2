@@ -36,6 +36,11 @@ export class ProdutosController {
   @Redirect('/produtos/listar')
   public alternarStatus(@Query('id') idProduto: string) {
     this.produtosService.alternarStatus(idProduto);
-    return;
+  }
+
+  @Get('/remover')
+  @Redirect('/produtos/listar')
+  public removerProduto(@Query('id') idProduto: string) {
+    this.produtosService.remover(idProduto);
   }
 }
