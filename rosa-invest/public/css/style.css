@@ -6,11 +6,12 @@
 :root{
   --main-color: #C51162;
   --secundary-color: #880E4F;
+  --main-text-color: #ECEFF1
 }
 
 body {
   background: var(--main-color);
-  color: #ECEFF1;
+  color: var(--main-text-color);
   /* https://fonts.google.com/specimen/Poppins */
   font-family: 'Poppins', sans-serif;
 }
