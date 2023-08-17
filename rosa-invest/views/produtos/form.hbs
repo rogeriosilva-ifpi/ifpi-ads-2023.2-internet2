@@ -1,0 +1,20 @@
+{{#> base }}
+  {{#*inline "title" }}Novo Produto{{/inline}}
+
+  {{#*inline "mainContent" }}
+    <h1>Novo Produto</h1>
+
+    <form action="/produtos/salvar" method="post">
+      <input type="text" name="nome" placeholder="Nome" />
+      <input type="text" name="destinacao" placeholder="Destinacao"/>
+      <input type="number" step="1" name="taxaRentabilidade" 
+        placeholder="Taxa Rentabilidade"/>
+      <input type="number" step="1" name="taxaAdministracao" 
+        placeholder="Taxa de Administração" />
+      <input type="date" name="vencimento" />
+
+      <input type="submit" value="Cadastrar Produto">
+    </form>
+  {{/inline}}
+
+{{/base }}

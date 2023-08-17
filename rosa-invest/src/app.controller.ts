@@ -8,4 +8,11 @@ export class AppController {
     const message = 'Hello NestJS + Handlebars';
     return { message };
   }
+
+  @Get('/hello2')
+  @Render('hello2')
+  hello2() {
+    const message = 'Hello2 NestJS + Handlebars';
+    return { message };
+  }
 }
