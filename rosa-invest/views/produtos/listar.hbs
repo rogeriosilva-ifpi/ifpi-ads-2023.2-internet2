@@ -2,13 +2,16 @@
   {{#*inline "title" }}Produtos{{/inline}}
 
   {{#*inline "mainContent" }}
-    <h1>Produtos</h1>
+    <h1>Produtos - RENDA FIXA</h1>
+    <h2>
+      <a href="/produtos/novo">NOVO</a>
+    </h2>
 
     <table>
       <tr>
         <th>#</th>
         <th>Nome</th>
-        <th>Disponível</th>
+        <th>Situação</th>
         <th>Taxa Juros(%)</th>
         <th>Ações</th>
       </tr>
@@ -16,7 +19,7 @@
         <tr>
           <td>{{produto.id}}</td>
           <td>{{produto.nome}}</td>
-          <td>{{produto.disponivel}}</td>
+          <td>{{produto.status}}</td>
           <td>{{produto.taxaRentabilidade}}</td>
           <td>
             <a href="/produtos/alternar-status?id={{produto.id}}">
@@ -25,7 +28,7 @@
               {{else}}
                 Disponibilizar
               {{/if}}
-            </a>
+            </a> 
             <a href="/produtos/remover?id={{produto.id}}">Remover</a>
           </td>
         </tr>

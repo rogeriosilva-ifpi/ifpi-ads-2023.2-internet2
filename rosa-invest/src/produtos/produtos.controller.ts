@@ -16,9 +16,7 @@ export class ProdutosController {
 
   @Get('/novo')
   @Render('produtos/form')
-  public formularioProduto() {
-    return;
-  }
+  public formularioProduto() {}
 
   @Post('/salvar')
   @Redirect('/produtos/listar')
