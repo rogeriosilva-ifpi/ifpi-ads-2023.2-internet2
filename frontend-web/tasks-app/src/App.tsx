@@ -5,7 +5,7 @@ function App() {
 
   return (
     <div>
-      <header>App Tarefas</header>
+      <header>Tasks App Web</header>
       <main>
         <TasksPage />
       </main>
