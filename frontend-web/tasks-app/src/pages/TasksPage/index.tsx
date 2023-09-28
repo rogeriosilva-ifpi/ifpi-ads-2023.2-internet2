@@ -34,10 +34,23 @@ export function TasksPage() {
     setTasks(filtradas)
   }
 
+  const handleSaveTask = (task: Task) => {
+    const filtradas = tasks.filter(t => {
+      if (t.id === task.id) {
+        return task
+      }
+      return t
+    })
+
+    setTasks(filtradas)
+  }
+
+  console.log('Page renderizada!')
+
   return (
     <>
       <TaskForm onAdd={handleAddTask} />
-      <TaskList tasks={tasks} onRemove={handleRemoveTask} />
+      <TaskList tasks={tasks} onSave={handleSaveTask} onRemove={handleRemoveTask} />
     </>
   )
 }
