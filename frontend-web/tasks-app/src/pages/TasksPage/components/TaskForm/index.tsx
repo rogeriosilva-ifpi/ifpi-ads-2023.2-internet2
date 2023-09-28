@@ -12,9 +12,9 @@ export function TaskForm({ onAdd }: TaskFormProps) {
     event.preventDefault()
     const text = descriptionInputRef.current!.value
 
-    // event.target.reset()
+    const form = (event.target as HTMLFormElement)
+    form.reset()
     descriptionInputRef.current!.focus()
-    descriptionInputRef.current!.value = ''
 
     onAdd(text)
   }
