@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import React, { useRef } from 'react'
 
 interface TaskFormProps {
   onAdd: (text: string) => void
@@ -8,12 +8,13 @@ export function TaskForm({ onAdd }: TaskFormProps) {
 
   const descriptionInputRef = useRef<HTMLInputElement>(null)
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const text = descriptionInputRef.current!.value
 
-    event.target.reset()
+    // event.target.reset()
     descriptionInputRef.current!.focus()
+    descriptionInputRef.current!.value = ''
 
     onAdd(text)
   }
