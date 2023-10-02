@@ -1,0 +1,39 @@
+{
+  "tasks": [
+    {
+      "id": "ASCVBNMSA",
+      "created_at": "2023-10-01",
+      "name": "Estudar React Reducer",
+      "description": "...",
+      "done": false
+    },
+    {
+      "id": "01HBRAJ1VZKJ7S3D0BDXXZNZ8Q",
+      "created_at": "2023-10-02T13:52:03.967Z",
+      "name": "Correr sozinho",
+      "description": "...",
+      "done": false
+    },
+    {
+      "id": "01HBRAJCZN0SPCSQWSE43QRAVK",
+      "created_at": "2023-10-02T13:52:15.349Z",
+      "name": "Dançar",
+      "description": "...",
+      "done": false
+    },
+    {
+      "id": "01HBRAQ51W1XABAYQDAVMPCQ0K",
+      "created_at": "2023-10-02T13:54:51.069Z",
+      "name": "Comer Pipoca",
+      "description": "...",
+      "done": false
+    },
+    {
+      "id": "01HBRASS7FXPEZZ4BYJK4PS4YD",
+      "created_at": "2023-10-02T13:56:17.264Z",
+      "name": "Andar de Bike",
+      "description": "...",
+      "done": false
+    }
+  ]
+}
