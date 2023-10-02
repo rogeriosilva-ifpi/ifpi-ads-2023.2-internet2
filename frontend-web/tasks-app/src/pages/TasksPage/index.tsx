@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { ulid } from 'ulidx'
+import { useReducer } from 'react'
+import { ActionType, taskStateReducer } from '../../reducers/tasks_reducer'
 import { TaskForm } from './components/TaskForm'
 import { TaskList } from './components/TaskList'
 
@@ -13,36 +13,18 @@ export interface Task {
 
 
 export function TasksPage() {
-
-  const [tasks, setTasks] = useState<Task[]>([])
-
+  const [state, dispatch] = useReducer(taskStateReducer, {tasks: []})
 
   const handleAddTask = (text: string) => {
-    const new_task = {
-      id: ulid(),
-      created_at: new Date(),
-      name: text,
-      description: 'Brincar quando estiver cansado',
-      done: false
-    }
-
-    setTasks([new_task, ...tasks])
+    dispatch({type: ActionType.Added, payload: {text}})
   }
 
-  const handleRemoveTask = (task: Task) => {
-    const filtradas = tasks.filter(t => t.id !== task.id)
-    setTasks(filtradas)
+  const handleRemoveTask = ({id}: Task) => {
+    dispatch({type: ActionType.Deleted, payload: {id}})
   }
 
   const handleSaveTask = (task: Task) => {
-    const filtradas = tasks.filter(t => {
-      if (t.id === task.id) {
-        return task
-      }
-      return t
-    })
-
-    setTasks(filtradas)
+    dispatch({type: ActionType.Changed, payload: {task}})
   }
 
   console.log('Page renderizada!')
@@ -50,7 +32,10 @@ export function TasksPage() {
   return (
     <>
       <TaskForm onAdd={handleAddTask} />
-      <TaskList tasks={tasks} onSave={handleSaveTask} onRemove={handleRemoveTask} />
+      <TaskList 
+        tasks={state.tasks} 
+        onSave={handleSaveTask} 
+        onRemove={handleRemoveTask} />
     </>
   )
 }
