@@ -1,5 +1,6 @@
-import { useEffect, useReducer } from 'react'
+import { useEffect, useMemo, useReducer } from 'react'
 import { ulid } from 'ulidx'
+import { TasksRepository } from '../../data/TasksRepository'
 import { ActionType, TaskReducer } from '../../reducers/task_reducer'
 import { TaskForm } from './components/TaskForm'
 import { TaskList } from './components/TaskList'
@@ -14,19 +15,23 @@ export interface Task {
 
 
 export function TasksPage() {
+  const repository = useMemo(() => new TasksRepository(), [])
 
   const [{ tasks }, dispatch] = useReducer(TaskReducer, { tasks: [] })
 
   useEffect(() => {
-    fetch('http://localhost:3000/tasks')
-      .then(response => response.json())
-      .then(data => {
-        dispatch({ type: ActionType.LOADED, payload: { tasks: data } })
-      })
+    const routine = async () => {
+      const tasks = await repository.fetchAllTasks()
+
+      dispatch({ type: ActionType.LOADED, payload: { tasks: tasks ?? [] } })
+    }
+
+    routine()
   }, [])
 
 
   const handleAddTask = (text: string) => {
+    if (text.trim().length == 0) return
 
     const task: Task = {
       id: ulid(),
@@ -36,28 +41,34 @@ export function TasksPage() {
       done: false
     };
 
-    const init = {
-      method: 'POST',
-      body: JSON.stringify(task),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    }
-    fetch('http://localhost:3000/tasks', init)
-      .then(response => {
-        if (response.ok) {
-          dispatch({ type: ActionType.ADDED, payload: { task } })
+    repository.saveNewTask(task)
+      .then(id => {
+        if (id == null) {
+          // delete otmist task when repository return null (not saved)
+          dispatch({ type: ActionType.REMOVED, payload: { id: task.id } })
         }
       })
 
+    // while the request is made, follow otimistic
+    dispatch({ type: ActionType.ADDED, payload: { task } })
+
+
   }
 
-  const handleRemoveTask = (task: Task) => {
-    dispatch({ type: ActionType.REMOVED, payload: { id: task.id } })
+  const handleRemoveTask = async (task: Task) => {
+    const deleted = await repository.deleteTask(task.id)
+
+    if (deleted) {
+      dispatch({ type: ActionType.REMOVED, payload: { id: task.id } })
+    }
   }
 
-  const handleSaveTask = (task: Task) => {
-    dispatch({ type: ActionType.UPDATED, payload: { task } })
+  const handleSaveTask = async (task: Task) => {
+    const updatedId = await repository.updateTask(task)
+
+    if (updatedId != null) {
+      dispatch({ type: ActionType.UPDATED, payload: { task } })
+    }
   }
 
   console.log('Page renderizada!')
