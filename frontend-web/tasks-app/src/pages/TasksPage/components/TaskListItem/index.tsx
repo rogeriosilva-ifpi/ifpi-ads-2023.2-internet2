@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react"
+import { Link } from "react-router-dom"
 import { Task } from "../.."
 
 interface TaskListItemProps {
@@ -49,14 +50,17 @@ export function TaskListItem({ task, onRemove, onSave }: TaskListItemProps) {
 
   console.log('Item renderizado!')
 
+  // TaskListItem
   return (
     <li style={{ listStyle: "none" }}>
       <div style={{ display: "flex", gap: 10 }}>
         <input type="checkbox" ref={refDone} onChange={handleChangeDone} />
 
-        {isEditing ? <input ref={refInput} /> :
+        {isEditing ? 
+          <input ref={refInput} /> 
+          :
           <p>
-            {task.name}
+            <Link to={`/tasks/${task.id}`}>{task.name}</Link> 
           </p>
         }
 
