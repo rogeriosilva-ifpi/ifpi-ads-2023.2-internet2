@@ -63,9 +63,9 @@ export function TasksPage() {
   console.log('Page renderizada!')
 
   return (
-    <>
+    <main>
       <TaskForm onAdd={handleAddTask} />
       <TaskList tasks={tasks} onSave={handleSaveTask} onRemove={handleRemoveTask} />
-    </>
+    </main>
   )
 }

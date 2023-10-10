@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react"
+import { Link } from "react-router-dom"
 import { Task } from "../.."
 
 interface TaskListItemProps {
@@ -56,12 +57,12 @@ export function TaskListItem({ task, onRemove, onSave }: TaskListItemProps) {
 
         {isEditing ? <input ref={refInput} /> :
           <p>
-            {task.name}
+            <Link to={`/tasks/${task.id}`}>{task.name}</Link>
           </p>
         }
 
         <button onClick={handleSaveOrEdit}>{labelBtnEditar}</button>
         <button onClick={handleRemove}>Lixeira</button>
       </div>
-    </li>)
+    </li >)
 }
