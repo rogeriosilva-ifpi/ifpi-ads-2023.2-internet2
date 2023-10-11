@@ -10,7 +10,7 @@ interface TaskListItemProps {
 export function TaskListItem({ task, onRemove, onSave }: TaskListItemProps) {
 
   const [isEditing, setIsEditing] = useState(false)
-  const refInput = useRef<HTMLInputElement>(null)
+  const refParagraph = useRef<HTMLParagraphElement>(null)
   const refDone = useRef<HTMLInputElement>(null)
 
   const handleRemove = () => { onRemove(task) }
@@ -19,7 +19,7 @@ export function TaskListItem({ task, onRemove, onSave }: TaskListItemProps) {
 
     if (isEditing) {
       setIsEditing(false)
-      task.name = refInput.current!.value;
+      task.name = refParagraph.current!.innerText;
       onSave(task)
     } else {
       setIsEditing(true)
@@ -36,12 +36,7 @@ export function TaskListItem({ task, onRemove, onSave }: TaskListItemProps) {
     refDone.current!.checked = task.done;
   }, [])
 
-  useEffect(() => {
-    if (isEditing) {
-      refInput.current!.value = task.name
-      refInput.current!.focus()
-    }
-  }, [isEditing])
+
 
   const labelBtnEditar = useMemo(() => {
     return isEditing ? 'Salvar' : 'Editar'
@@ -49,16 +44,16 @@ export function TaskListItem({ task, onRemove, onSave }: TaskListItemProps) {
 
   console.log('Item renderizado!')
 
+  const focusedStyle = isEditing ? {border: "2px solid #eee", padding: "10px", borderRadius: "10px"}: {}
+
   return (
     <li style={{ listStyle: "none" }}>
       <div style={{ display: "flex", gap: 10 }}>
         <input type="checkbox" ref={refDone} onChange={handleChangeDone} />
-
-        {isEditing ? <input ref={refInput} /> :
-          <p>
+          <p ref={refParagraph} contentEditable={isEditing} style={focusedStyle}>
             {task.name}
           </p>
-        }
+        
 
         <button onClick={handleSaveOrEdit}>{labelBtnEditar}</button>
         <button onClick={handleRemove}>Lixeira</button>
