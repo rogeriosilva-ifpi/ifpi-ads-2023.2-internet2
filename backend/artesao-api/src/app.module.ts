@@ -17,6 +17,8 @@ const appModules = [UsersModule, CommonModule];
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       autoLoadEntities: true,
+      entities: ['./dist/src/**/entities/*.entity.js'],
+      // entities: [User, Contact, Password],
       synchronize: false,
     }),
     ...appModules,

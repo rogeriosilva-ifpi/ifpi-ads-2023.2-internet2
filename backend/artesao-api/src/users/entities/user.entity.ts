@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   Entity,
   OneToMany,
@@ -10,7 +11,7 @@ import { Contact } from './contact.entity';
 import { Password } from './password.entity';
 
 @Entity()
-export class User {
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -38,7 +39,7 @@ export class User {
     onDelete: 'CASCADE',
     nullable: true,
   })
-  passwords: Promise<Password[]>;
+  passwords: Password[];
 
   @Column(() => CommonData, { prefix: '' })
   data: CommonData;
