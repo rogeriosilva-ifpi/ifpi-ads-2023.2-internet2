@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { jwtOptions } from '../constants';
+import { RefreshDto } from '../dto/refresh.dto';
 import { SigninDto } from '../dto/signin.dto';
 import { SignupDto } from '../dto/signup.dto';
 import { Password } from '../entities/password.entity';
@@ -56,12 +57,56 @@ export class AuthService {
     const payload = {
       sub: user.id,
       name: user.name,
+      type: 'access',
     };
-    const accessToken = await this.jwtService.sign(payload);
+    const accessToken = this.jwtService.sign(payload);
+    const refreshToken = this.jwtService.sign(
+      {
+        ...payload,
+        type: 'refresh',
+      },
+      {
+        expiresIn: jwtOptions.refreshExpiresIn,
+      },
+    );
 
-    const refreshToken = await this.jwtService.sign(payload, {
-      expiresIn: jwtOptions.refreshExpiresIn,
-    });
+    return { accessToken, refreshToken };
+  }
+
+  async refreshTokens({ token }: RefreshDto): Promise<SigninResponseDto> {
+    let data; //payload
+    try {
+      data = await this.jwtService.verifyAsync(token, {
+        secret: jwtOptions.secret,
+      });
+      if (data['type'] !== 'refresh') {
+        throw new UnauthorizedException('Token not type "refresh"!');
+      }
+    } catch (e) {
+      console.error(e);
+      throw new UnauthorizedException('Token inválido!');
+    }
+    const userId = data['sub'];
+    const user = await User.findOneBy({ id: userId });
+
+    if (!user) throw new UnauthorizedException('Usuário inexistente!');
+
+    const payload = {
+      sub: user.id,
+      name: user.name,
+      type: 'access',
+    };
+
+    const accessToken = this.jwtService.sign(payload);
+    const refreshToken = this.jwtService.sign(
+      {
+        type: 'refresh',
+        ...payload,
+      },
+      {
+        expiresIn: jwtOptions.refreshExpiresIn,
+      },
+    );
 
     return { accessToken, refreshToken };
   }

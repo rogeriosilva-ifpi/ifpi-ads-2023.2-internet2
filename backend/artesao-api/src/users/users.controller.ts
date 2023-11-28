@@ -1,28 +1,23 @@
-import { Body, Controller, Delete, Get, Param, Patch } from '@nestjs/common';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { Controller, HttpStatus, Param, Post, Res } from '@nestjs/common';
+import { Response } from 'express';
+import { GetUser } from './auth/decorators/get-user.decorator';
+import { Roles } from './auth/decorators/roles.decorator';
+import { UserRoleEnum } from './entities/user-role.enum';
+import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @Roles(UserRoleEnum.ADMIN)
+  @Post(':id/toggle-active')
+  async toggleActive(
+    @Param('id') userId: string,
+    @Res() res: Response,
+    @GetUser() currentUser: User,
+  ) {
+    await this.usersService.toggleActive({ userId, currentUser });
+    return res.status(HttpStatus.NO_CONTENT).send();
   }
 }

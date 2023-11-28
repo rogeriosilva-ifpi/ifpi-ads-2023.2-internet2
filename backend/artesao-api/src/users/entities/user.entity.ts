@@ -9,6 +9,7 @@ import {
 import { CommonData } from '../../common/entities/common.entity';
 import { Contact } from './contact.entity';
 import { Password } from './password.entity';
+import { UserRoleEnum } from './user-role.enum';
 
 @Entity()
 export class User extends BaseEntity {
@@ -23,6 +24,9 @@ export class User extends BaseEntity {
 
   @Column({ default: true })
   active: boolean;
+
+  @Column({ type: 'enum', enum: UserRoleEnum, default: UserRoleEnum.COSTUMER })
+  role: UserRoleEnum;
 
   // Class USER
   @OneToMany(() => Contact, (contact) => contact.user, {
@@ -43,4 +47,8 @@ export class User extends BaseEntity {
 
   @Column(() => CommonData, { prefix: '' })
   data: CommonData;
+
+  public toggleActive() {
+    this.active = !this.active;
+  }
 }
